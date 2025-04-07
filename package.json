@@ -1,22 +1,27 @@
 {
-  "name": "project-1",
+  "name": "project-1-ddd-card-list",
   "version": "1.0.0",
   "description": "Penn State Design System compliant card components.",
   "main": "index.js",
   "scripts": {
     "start": "serve dist -l 3000",
-    "build": "npm run copy-assets",
+    "build": "npm run clean && npm run copy-assets",
     "copy-assets": "mkdir -p dist && cp -r src/* dist/",
     "dev": "serve src -l 3000",
     "clean": "rm -rf dist",
-    "predeploy": "npm run clean && npm run build"
+    "predeploy": "npm run build",
+    "vercel-build": "npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nickhadden23/project-1.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "penn-state",
+    "web-components",
+    "lit-element"
+  ],
+  "author": "Nick Hadden",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/nickhadden23/project-1/issues"
@@ -24,5 +29,8 @@
   "homepage": "https://github.com/nickhadden23/project-1#readme",
   "devDependencies": {
     "serve": "^14.2.4"
+  },
+  "dependencies": {
+    "lit": "^2.6.1"
   }
 }
