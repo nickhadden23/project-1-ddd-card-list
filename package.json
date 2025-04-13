@@ -6,9 +6,9 @@
   "scripts": {
     "start": "serve dist -l 3000",
     "build": "npm run clean && npm run copy-assets",
-    "copy-assets": "mkdir -p dist && cp -r src/* dist/",
+    "copy-assets": "copyfiles -u 1 src/**/*.{html,css,js} dist",
     "dev": "serve src -l 3000",
-    "clean": "rm -rf dist",
+    "clean": "rimraf dist",
     "predeploy": "npm run build",
     "vercel-build": "npm run build"
   },
@@ -28,9 +28,13 @@
   },
   "homepage": "https://github.com/nickhadden23/project-1#readme",
   "devDependencies": {
+    "copyfiles": "^2.4.1",
+    "rimraf": "^6.0.1",
     "serve": "^14.2.4"
   },
   "dependencies": {
-    "lit": "^2.6.1"
+    "@haxtheweb/d-d-d": "^10.0.2",
+    "@haxtheweb/i18n-manager": "^10.0.2",
+    "lit": "^2.8.0"
   }
 }

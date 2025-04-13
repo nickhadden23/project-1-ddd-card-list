@@ -1,143 +1,100 @@
-import { LitElement, html, css } from 'lit';
+import { html, css } from 'https://cdn.jsdelivr.net/gh/lit/dist@2/core/lit-core.min.js';
+import { DDD, DDDPulseEffectSuper } from 'https://cdn.jsdelivr.net/npm/@haxtheweb/d-d-d@10.0.2/d-d-d.js';
+import { I18NMixin } from 'https://cdn.jsdelivr.net/npm/@haxtheweb/i18n-manager@10.0.2/lib/I18NMixin.js';
 
-export class DddCard extends LitElement {
+export class DddCard extends DDDPulseEffectSuper(I18NMixin(DDD)) {
   static get tag() {
     return 'ddd-card';
   }
 
+  constructor() {
+    super();
+    this.title = 'Campus';
+    this.link = '#';
+    this.image = '';
+    this.dddPrimary = '7';
+  }
+
   static get properties() {
     return {
+      ...super.properties,
       title: { type: String },
       link: { type: String },
       image: { type: String },
-      dddPrimary: { type: String, attribute: 'ddd-primary' },
+      dddPrimary: { 
+        type: String, 
+        attribute: 'ddd-primary', 
+        reflect: true 
+      },
     };
   }
 
   static get styles() {
-    return css`
-      :host {
-        display: block;
-        width: 100%;
-        max-width: 380px;
-        background: var(--ddd-theme-default-white);
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        transition: transform 0.3s ease;
-        margin: 0 auto;
-      }
-
-      :host(:hover) {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      }
-
-      .card-image-container {
-        width: 100%;
-        height: 200px;
-        overflow: hidden;
-        position: relative;
-      }
-
-      .card-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.5s ease;
-      }
-
-      :host(:hover) .card-image {
-        transform: scale(1.03);
-      }
-
-      .card-content {
-        padding: 1.5rem;
-      }
-
-      .accent-bar {
-        height: 4px;
-        background: var(--ddd-theme-default-primary);
-        margin-bottom: 1rem;
-        width: 100%;
-        position: absolute;
-        bottom: 0;
-        left: 0;    
-        right: 0;
-      }
-
-      .campus-name {
-        font-size: var(--ddd-font-size-lg);
-        color: var(--ddd-theme-default-primary);
-        margin: 0 0 0.75rem 0;
-        font-weight: var(--ddd-font-weight-bold);
-        line-height: 1.3;
-      }
-
-      .campus-description {
-        font-size: var(--ddd-font-size-md);
-        color: var(--ddd-theme-default-keystoneDark);
-        margin: 0 0 1.5rem 0;
-        line-height: 1.5;
-      }
-
-      .explore-link {
-        display: inline-flex;
-        align-items: center;
-        color: var(--ddd-theme-default-link);
-        font-weight: var(--ddd-font-weight-bold);
-        text-decoration: none;
-        font-size: var(--ddd-font-size-md);
-      }
-
-      .explore-link:hover {
-        text-decoration: underline;
-      }
-
-      .explore-link::after {
-        content: "→";
-        margin-left: 0.5rem;
-        transition: transform 0.2s ease;
-      }
-
-      .explore-link:hover::after {
-        transform: translateX(3px);
-      }
-
-      @media (max-width: 768px) {
-        .card-image-container {
-          height: 180px;
+    return [
+      super.styles,
+      css`
+        :host {
+          display: block;
+          width: 300px;
+          margin: 1rem;
         }
-      }
-    `;
-  }
 
-  constructor() {
-    super();
-    this.title = "Campus Name";
-    this.link = "#";
-    this.image = "";
-    this.dddPrimary = "7"; // Default to Penn State blue
+        .card {
+          background: white;
+          border-radius: 16px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          overflow: hidden;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .card-image {
+          width: 100%;
+          height: 200px;
+          object-fit: cover;
+          display: block;
+        }
+
+        .accent-bar {
+          height: 8px;
+          background: black;
+          color: black;
+        }
+
+        .card-content {
+          padding: 20px;
+        }
+
+        .campus-name {
+          margin: 0 0 8px 0;
+          color: var(--ddd-theme-primary);
+          font-size: 1.5rem;
+        }
+
+        .explore-button {
+          display: inline-block;
+          background-color: var(--ddd-theme-primary);
+          color: white;
+          padding: 12px 24px;
+          border-radius: 8px;
+          text-decoration: none;
+          text-align: center;
+          margin-top: 1rem;
+        }
+      `
+    ];
   }
 
   render() {
     return html`
       <div class="card">
-        <div class="card-image-container">
-          <img 
-            class="card-image" 
-            src="${this.image}" 
-            alt="${this.title} campus" 
-            loading="lazy"
-          >
-        </div>
+        ${this.image ? html`<img class="card-image" src="${this.image}" alt="${this.title}">` : ''}
+        <div class="accent-bar"></div>
         <div class="card-content">
-          <div class="accent-bar"></div>
           <h3 class="campus-name">${this.title}</h3>
-          <div class="campus-description">
-            <slot></slot>
-          </div>
-          <a href="${this.link}" class="explore-link">Explore</a>
+          <slot></slot>
+          <a class="explore-button" href="${this.link}">Explore ></a>
         </div>
       </div>
     `;

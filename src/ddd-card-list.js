@@ -1,58 +1,66 @@
-import { LitElement, html, css } from 'lit';
+import { html, css } from 'https://cdn.jsdelivr.net/gh/lit/dist@2/core/lit-core.min.js';
+import { DDD, DDDPulseEffectSuper } from 'https://cdn.jsdelivr.net/npm/@haxtheweb/d-d-d@10.0.2/d-d-d.js';
+import { I18NMixin } from 'https://cdn.jsdelivr.net/npm/@haxtheweb/i18n-manager@10.0.2/lib/I18NMixin.js';
 
-export class DddCardList extends LitElement {
+export class DddCardList extends DDDPulseEffectSuper(I18NMixin(DDD)) {
   static get tag() {
     return 'ddd-card-list';
   }
 
+  constructor() {
+    super();
+    this.dddPrimary = '';
+    this.dddAccent = '';
+  }
+
   static get properties() {
     return {
-      dddPrimary: { type: String, attribute: 'ddd-primary' },
-      dddAccent: { type: String, attribute: 'ddd-accent' },
+      ...super.properties,
+      dddPrimary: { 
+        type: String, 
+        attribute: 'ddd-primary', 
+        reflect: true 
+      },
+      dddAccent: { 
+        type: String, 
+        attribute: 'ddd-accent', 
+        reflect: true 
+      }
     };
   }
 
   static get styles() {
-    return css`
-      :host {
-        display: block;
-        padding: 3rem 1rem;
-        background: var(--ddd-theme-default-accent);
-      }
-
-      .cards-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-        gap: 2rem;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-
-      @media (max-width: 768px) {
+    return [
+      super.styles,
+      css`
         :host {
-          padding: 2rem 1rem;
+          display: block;
+          padding: 2rem;
+          background-color: var(--ddd-theme-accent);
         }
-        
+
         .cards-container {
-          grid-template-columns: 1fr;
-          gap: 1.5rem;
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          gap: 2rem;
+          max-width: 1200px;
+          margin: 0 auto;
         }
-      }
-    `;
+      `
+    ];
   }
 
-  updated(changedProperties) {
-    if (changedProperties.has('dddPrimary')) {
+  updated(changedProps) {
+    super.updated(changedProps);
+    if (changedProps.has('dddPrimary')) {
       const cards = this.querySelectorAll('ddd-card');
       cards.forEach(card => {
         card.setAttribute('ddd-primary', this.dddPrimary);
       });
     }
-    if (changedProperties.has('dddAccent')) {
-      this.style.setProperty(
-        '--ddd-theme-default-accent',
-        `var(--ddd-theme-accent-${this.dddAccent})`
-      );
+
+    if (changedProps.has('dddAccent')) {
+      this.style.setProperty('--ddd-theme-accent', `var(--ddd-theme-accent-${this.dddAccent})`);
     }
   }
 
